@@ -1,0 +1,624 @@
+/* ==================== GLOBAL STYLES & VARIABLES ==================== */
+:root {
+  --bg-dark: #0b0e14;
+  --bg-card: #151a23;
+  --bg-card-hover: #1c2330;
+  --bg-input: #0f131a;
+  --border-color: #232a3b;
+  
+  --text-main: #f0f4f8;
+  --text-muted: #8a99ad;
+  --text-dim: #5c6b73;
+
+  --profit: #10b981;
+  --profit-glow: rgba(16, 185, 129, 0.15);
+  --loss: #ef4444;
+  --loss-glow: rgba(239, 68, 68, 0.15);
+  --neutral: #6b7280;
+
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --accent-glow: rgba(59, 130, 246, 0.2);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  min-height: 100vh;
+  padding: 24px;
+  line-height: 1.5;
+}
+
+.app-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ==================== HEADER ==================== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  padding: 20px 28px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand i {
+  font-size: 28px;
+  color: var(--accent);
+}
+
+.brand h1 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
+}
+
+/* ==================== STATS DASHBOARD ==================== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.stat-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.text-profit { color: var(--profit) !important; }
+.text-loss { color: var(--loss) !important; }
+.text-neutral { color: var(--text-main) !important; }
+.text-accent { color: var(--accent) !important; }
+
+/* Filter Bar */
+.filter-bar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.filter-select {
+  background: var(--bg-input);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-size: 13px;
+}
+
+/* ==================== MAIN CALENDAR CONTAINER ==================== */
+.calendar-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-icon {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-icon:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+}
+
+.btn-secondary {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--text-muted);
+}
+
+.current-month-display {
+  font-size: 20px;
+  font-weight: 700;
+  min-width: 180px;
+  text-align: center;
+}
+
+.monthly-summary-badge {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-input);
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  font-size: 13px;
+}
+
+.summary-item {
+  display: flex;
+  gap: 6px;
+}
+
+.summary-label { color: var(--text-muted); }
+
+/* Calendar Grid Layout */
+.calendar-grid-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr) 120px;
+  gap: 8px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-muted);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.calendar-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calendar-week-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr) 120px;
+  gap: 8px;
+}
+
+.day-cell {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  min-height: 100px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.day-cell:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+}
+
+.day-cell.other-month {
+  opacity: 0.3;
+}
+
+.day-cell.today {
+  border: 1.5px solid var(--accent);
+}
+
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.day-number {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.trade-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.day-pl {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: auto;
+  text-align: right;
+}
+
+/* P/L Status Styling for Day Cells */
+.day-cell.is-profit {
+  background: linear-gradient(180deg, var(--bg-input) 50%, var(--profit-glow) 100%);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.day-cell.is-loss {
+  background: linear-gradient(180deg, var(--bg-input) 50%, var(--loss-glow) 100%);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Weekly Total Sidebar Column */
+.weekly-summary-cell {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.weekly-summary-cell .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.weekly-summary-cell .value {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ==================== MODAL STYLES ==================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition);
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.close-modal:hover { color: var(--text-main); }
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+.form-group label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.form-control {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  color: var(--text-main);
+  font-size: 14px;
+  outline: none;
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  border-color: var(--accent);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.image-preview {
+  margin-top: 8px;
+  max-height: 150px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: none;
+  border: 1px solid var(--border-color);
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Trades Detail List in Modal */
+.trades-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trade-card-detail {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trade-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.trade-badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-buy { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+.badge-sell { background: rgba(249, 115, 22, 0.2); color: #fb923c; }
+
+.trade-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 8px;
+  border-radius: var(--radius-sm);
+}
+
+.trade-info-item span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.trade-chart-img {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid var(--border-color);
+}
+
+.trade-chart-img:hover {
+  opacity: 0.9;
+}
+
+.trade-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--loss);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn-danger:hover {
+  background: var(--loss);
+  color: #fff;
+}
+
+/* Image Lightbox */
+.lightbox-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition);
+}
+
+.lightbox-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.lightbox-overlay img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 30px rgba(0,0,0,0.8);
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+@media (max-width: 1024px) {
+  .calendar-grid-header, .calendar-week-row {
+    grid-template-columns: repeat(7, 1fr);
+  }
+  .weekly-header, .weekly-summary-cell {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  body { padding: 12px; }
+  .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+  .calendar-grid-header { font-size: 11px; }
+  .day-cell { min-height: 80px; padding: 6px; }
+  .day-pl { font-size: 12px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full-width { grid-column: span 1; }
+  .trade-info-grid { grid-template-columns: repeat(2, 1fr); }
+}

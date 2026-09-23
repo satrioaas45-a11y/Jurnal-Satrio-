@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading Journal Pro</title>
+  
+  <!-- Font Inter & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header>
+      <div class="brand">
+        <i class="fa-solid fa-chart-line"></i>
+        <h1>Trading Journal Pro</h1>
+      </div>
+      <button class="btn-primary" onclick="openAddModal()">
+        <i class="fa-solid fa-plus"></i> Tambah Trade
+      </button>
+    </header>
+
+    <!-- DASHBOARD STATISTIK -->
+    <section class="dashboard-grid">
+      <div class="stat-card">
+        <span class="stat-title">P/L Hari Ini</span>
+        <span class="stat-value" id="stat-today">$0.00</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-title">P/L Minggu Ini</span>
+        <span class="stat-value" id="stat-week">$0.00</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-title">P/L Bulan Ini</span>
+        <span class="stat-value" id="stat-month">$0.00</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-title">Total Trades</span>
+        <span class="stat-value text-accent" id="stat-trades">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-title">Win Rate</span>
+        <span class="stat-value text-accent" id="stat-winrate">0%</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-title">Win / Loss</span>
+        <span class="stat-value"><span class="text-profit" id="stat-wins">0</span> / <span class="text-loss" id="stat-losses">0</span></span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-title">Profit Factor</span>
+        <span class="stat-value" id="stat-pf">0.00</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-title">Avg Win / Loss</span>
+        <span class="stat-value" style="font-size: 14px;">
+          <span class="text-profit" id="stat-avg-win">+$0</span> | <span class="text-loss" id="stat-avg-loss">-$0</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- FILTER BAR -->
+    <section class="filter-bar">
+      <div class="filter-group">
+        <i class="fa-solid fa-filter"></i>
+        <label>Filter Pair:</label>
+        <select id="filter-pair" class="filter-select" onchange="renderApp()">
+          <option value="ALL">Semua Pair</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Hasil:</label>
+        <select id="filter-result" class="filter-select" onchange="renderApp()">
+          <option value="ALL">Semua</option>
+          <option value="PROFIT">Profit Saja</option>
+          <option value="LOSS">Loss Saja</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- KALENDER UTAMA -->
+    <main class="calendar-wrapper">
+      <div class="calendar-header">
+        <div class="calendar-controls">
+          <button class="btn-icon" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+          <div class="current-month-display" id="calendar-month-year">September 2026</div>
+          <button class="btn-icon" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+          <button class="btn-secondary" onclick="goToToday()">Hari Ini</button>
+        </div>
+
+        <div class="monthly-summary-badge">
+          <div class="summary-item"><span class="summary-label">Trades:</span> <strong id="month-total-trades">0</strong></div>
+          <div class="summary-item"><span class="summary-label">W:</span> <strong class="text-profit" id="month-wins">0</strong></div>
+          <div class="summary-item"><span class="summary-label">L:</span> <strong class="text-loss" id="month-losses">0</strong></div>
+          <div class="summary-item"><span class="summary-label">Monthly P/L:</span> <strong id="month-total-pl">$0.00</strong></div>
+        </div>
+      </div>
+
+      <div class="calendar-grid-header">
+        <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+        <div class="weekly-header">Mingguan</div>
+      </div>
+
+      <div class="calendar-body" id="calendar-grid">
+        <!-- Kalender & Kolom Total Mingguan di-render oleh JS -->
+      </div>
+    </main>
+
+  </div>
+
+  <!-- MODAL: TAMBAH / EDIT TRADE -->
+  <div class="modal-overlay" id="modal-trade-form">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="form-modal-title">Tambah Journal Entry</h3>
+        <button class="close-modal" onclick="closeModal('modal-trade-form')">&times;</button>
+      </div>
+
+      <form id="trade-form" onsubmit="saveTrade(event)">
+        <input type="hidden" id="trade-id">
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Tanggal *</label>
+            <input type="date" id="trade-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Pair / Symbol *</label>
+            <input type="text" id="trade-pair" class="form-control" placeholder="XAUUSD, EURUSD, BTCUSD" required style="text-transform:uppercase;">
+          </div>
+          <div class="form-group">
+            <label>Tipe *</label>
+            <select id="trade-type" class="form-control" required>
+              <option value="BUY">BUY</option>
+              <option value="SELL">SELL</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Profit / Loss ($) *</label>
+            <input type="number" step="0.01" id="trade-pl" class="form-control" placeholder="Contoh: 25.50 atau -10" required>
+          </div>
+          <div class="form-group">
+            <label>Lot Size</label>
+            <input type="number" step="0.01" id="trade-lot" class="form-control" placeholder="0.10">
+          </div>
+          <div class="form-group">
+            <label>Entry Price</label>
+            <input type="number" step="any" id="trade-entry" class="form-control" placeholder="1920.50">
+          </div>
+          <div class="form-group">
+            <label>Stop Loss (SL)</label>
+            <input type="number" step="any" id="trade-sl" class="form-control" placeholder="1915.00">
+          </div>
+          <div class="form-group">
+            <label>Take Profit (TP)</label>
+            <input type="number" step="any" id="trade-tp" class="form-control" placeholder="1930.00">
+          </div>
+          <div class="form-group full-width">
+            <label>Alasan Entry</label>
+            <textarea id="trade-reason" class="form-control" placeholder="Breakout resistance, H4 Confluence..."></textarea>
+          </div>
+          <div class="form-group full-width">
+            <label>Catatan Tambahan</label>
+            <textarea id="trade-notes" class="form-control" placeholder="Kondisi emosi, pengelolaan risiko..."></textarea>
+          </div>
+          <div class="form-group full-width">
+            <label>Upload Screenshot / Chart</label>
+            <input type="file" id="trade-image" class="form-control" accept="image/*" onchange="previewImage(event)">
+            <div class="image-preview" id="image-preview-container">
+              <img id="image-preview" src="" alt="Preview Chart">
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+          <button type="button" class="btn-secondary" onclick="closeModal('modal-trade-form')">Batal</button>
+          <button type="submit" class="btn-primary">Simpan Trade</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: DETAIL JURNAL HARIAN -->
+  <div class="modal-overlay" id="modal-day-details">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="detail-modal-date">Detail Trading</h3>
+        <button class="close-modal" onclick="closeModal('modal-day-details')">&times;</button>
+      </div>
+
+      <div id="day-trades-container" class="trades-list">
+        <!-- List Trade Harian di-render oleh JS -->
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+        <button class="btn-primary" onclick="openAddModalForCurrentDetailDate()"><i class="fa-solid fa-plus"></i> Tambah Trade di Tanggal Ini</button>
+        <button class="btn-secondary" onclick="closeModal('modal-day-details')">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX / ZOOM PHOTO -->
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="Zoomed Chart">
+  </div>
+
+  <!-- Custom JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
